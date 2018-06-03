@@ -4,6 +4,7 @@ Core application of Bote App.
 
 # FAQs
 1. I don't have `redis` inside my machine.
+
   1. Disable `redis` in app
     - Add `true` in `SKIP_REDIS` inside `.env`
 
