@@ -60,8 +60,10 @@ if(process.env.SKIP_REDIS === 'true'){
   }));
 }
 
-const account = require('./Account');
+const login = require('./Login');
+const profile = require('./Profile');
 
-app.use('/account', account);
+app.use('/login', login);
+app.use('/profile', profile);
 
 module.exports = app;
