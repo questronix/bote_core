@@ -4,7 +4,7 @@ const router = express.Router();
 const mw = require('../common/middleware/Authentication');
 const pm = require('./model/Profile');
 
-router.get('/', mw.allowHome, (req, res)=>{
+router.get('/', mw.isAuthenticated, (req, res)=>{
   pm.getUserProfile(req.session.user.id)
   .then(data=>{
     res.json(data);

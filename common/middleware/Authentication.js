@@ -1,4 +1,4 @@
-module.exports.allowHome = (req, res, next)=>{
+module.exports.isAuthenticated = (req, res, next)=>{
   if(typeof req.session.user === 'undefined'){
     //redirect to login page
     res.status(400).send({
