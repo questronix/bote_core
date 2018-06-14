@@ -62,8 +62,10 @@ if(process.env.SKIP_REDIS === 'true'){
 
 const login = require('./Login');
 const profile = require('./Profile');
+const watson = require('./watson');
 
 app.use('/login', login);
 app.use('/profile', profile);
+app.use('/chat', watson);
 
 module.exports = app;
