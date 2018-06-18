@@ -3,7 +3,7 @@ const router = express.Router();
 
 const atm = require('./model/ATM');
 
-router.post('/', (req, res)=>{
+router.get('/', (req, res)=>{
     atm.getByNearestLatLong(req.body.latitude, req.body.longitude).then(data=>{
         res.json(data);
     }).catch(error=>{

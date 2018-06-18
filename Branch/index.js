@@ -3,7 +3,7 @@ const router = express.Router();
 
 const br = require('./model/Branch');
 
-router.post('/', (req, res)=>{
+router.get('/', (req, res)=>{
     br.getByNearestLatLong(req.body.latitude, req.body.longitude).then(data=>{
         res.json(data);
     }).catch(error=>{
