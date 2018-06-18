@@ -8,10 +8,10 @@ router.post('/', mw.allowLogin, (req, res)=>{
   lm.authenticate(req.body.username, req.body.password)
   .then(data=>{
     req.session.user = data.user;
-    res.json(data);
+    res.success(data);
   })
   .catch(error=>{
-    res.status(400).json(error);
+    res.error(error);
   });
 });
 
