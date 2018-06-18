@@ -4,7 +4,8 @@
   "description": "Core library for the Bote Project",
   "main": "index.js",
   "scripts": {
-    "test": "npm start"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +16,7 @@
     "Share"
   ],
   "author": "Kenster Crucillo <kendrick004@gmail.com>",
-  "license": "Apache",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/questronix/bote_core/issues"
   },
@@ -33,6 +34,7 @@
     "watson-developer-cloud": "^3.5.0"
   },
   "devDependencies": {
+    "nodemon": "^1.17.5",
     "pm2": "^2.10.4"
   }
 }
