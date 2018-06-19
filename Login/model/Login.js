@@ -16,7 +16,7 @@ module.exports.authenticate = (username, password)=>{
         let user = data[0];
         //validate its password
         //Base64('passwordhash:salt')
-        let userpass = (new Buffer(user.userpass, "base64").toString("utf8")).split(":");
+        let userpass = (Buffer.from(user.userpass, "base64").toString("utf8")).split(":");
         if(pass.validate(password, userpass[0], userpass[1])){
           //return the user
           resolve({
