@@ -1,8 +1,12 @@
+const TAG = '[Login]';
 const db = require('../../common/services/Database');
 const pass = require('../../common/services/Password');
 const err = require('../../common/services/Errors');
+const logger = require('../../common/services/Logger');
 
 module.exports.authenticate = (username, password)=>{
+  const ACTION = '[authenticate]';
+
   return new Promise((resolve, reject)=>{
     //Find user name first
     db.execute(`SELECT * FROM account WHERE username = ?`, [username])
@@ -38,6 +42,7 @@ module.exports.authenticate = (username, password)=>{
       }
     })
     .catch(error=>{
+      logger.log('error', TAG + ACTION, error);
       reject(err.raise('INTERNAL_SERVER_ERROR', error));
     });
   });
