@@ -63,8 +63,11 @@ module.exports.getOtherProfile = (username)=>{
         });
       }else{
         reject({
-          status: 0,
-          msg: 'User not found'
+          status: 404,
+          error: {
+            code: -4,
+            message: 'Page not Found'
+          }
         })
       }
     }).catch(error=>{
