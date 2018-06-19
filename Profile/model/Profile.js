@@ -38,8 +38,15 @@ module.exports.getUserProfile = (id)=>{
         reject(err.raise('INTERNAL_SERVER_ERROR', ));
         }
     }).catch(error=>{
-      logger.log('error', TAG+ACTION, error);
-      reject(err.raise('INTERNAL_SERVER_ERROR', error));
+        logger.log('error', TAG+ACTION, error);
+        reject({
+          status: 404,
+          error: {
+            code: -4,
+            message: 'Page not Found'
+          }
+        })
+      }
     });
   })
 };
@@ -62,6 +69,7 @@ module.exports.getOtherProfile = (username)=>{
           user: data[0]
         });
       }else{
+        logger.log('error', TAG+ACTION, error);
         reject({
           status: 404,
           error: {
