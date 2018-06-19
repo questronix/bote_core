@@ -1,5 +1,6 @@
 const db = require('../../common/services/Database');
 const pass = require('../../common/services/Password');
+const err = require('../../common/services/Errors');
 
 module.exports.authenticate = (username, password)=>{
   return new Promise((resolve, reject)=>{
@@ -29,25 +30,15 @@ module.exports.authenticate = (username, password)=>{
             }
           });
         }else{
-          reject({
-            status: 0,
-            msg: 'Invalid password.'
-          });
+          reject(err.raise('INVALID_CREDENTIALS'));
         }
       }else{
         //show error
-        reject({
-          status: 0,
-          msg: 'Invalid credentials'
-        });
+        reject(err.raise('INVALID_CREDENTIALS'));
       }
     })
     .catch(error=>{
-      reject({
-          status: 0,
-          msg: 'There is problem with your request.',
-          error: error
-        });
+      reject(err.raise('INTERNAL_SERVER_ERROR', error));
     });
   });
 };

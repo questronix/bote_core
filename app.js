@@ -20,6 +20,18 @@ app.engine('ejs', require('ejs').renderFile);
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+// setup success/error handler
+app.use(function(req, res, next) {
+  res.success = function(body) {
+    res.status(200);
+    res.json(body);
+  }
+  res.error = function(error) {
+    res.status(error.status);
+    res.json({ errors: [error.error] });
+  }
+  next();
+});
 
 // serve the files out of ./public as our main files
 app.use(express.static(path.join(__dirname, 'public')));
