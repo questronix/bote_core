@@ -6,6 +6,9 @@ const path = require('path');
 //middleware to process POST data
 const bodyParser = require('body-parser');
 
+//service for logging
+const logger = require('./common/services/Logger');
+
 const app = express();
 
 // implement standard security from helmet
@@ -20,6 +23,20 @@ app.engine('ejs', require('ejs').renderFile);
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+// setup success/error handler
+app.use(function(req, res, next) {
+  res.success = function(body) {
+    logger.log('debug', res.req.method + ' ' + req.originalUrl + ' response', body);
+    res.status(200);
+    res.json(body);
+  }
+  res.error = function(error) {
+    logger.log('error', res.req.method + ' ' + req.originalUrl + ' response', error);
+    res.status(error.status);
+    res.json({ errors: [error.error] });
+  }
+  next();
+});
 
 // serve the files out of ./public as our main files
 app.use(express.static(path.join(__dirname, 'public')));
