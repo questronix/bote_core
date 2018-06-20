@@ -56,4 +56,19 @@ router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
   }
 );
 
+router.post('/:username/edit-profile', mw.isAuthenticated, (req, res) => {
+  const ACTION = '[editProfile]';
+  logger.log('debug', TAG + ACTION + ' request parameters', req.params)
+  if (req.params.username === req.session.user.username){
+    profile.editUserProfile(req.body, req.session.user.id)
+    .then(data=>{
+      res.json(data);
+    })
+    .catch(error=>{
+      res.status(400).json(error);
+    });
+  }else{
+    res.status(403).json(error);
+  }
+})
 module.exports = router;
