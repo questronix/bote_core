@@ -17,7 +17,7 @@ module.exports.getFollowers = (username) => {
       WHERE id in (
         SELECT account_id FROM friends
         WHERE friend_id=(
-          SELECT id FROM account WHERE username=?
+          SELECT id FROM account WHERE username=? and status=1
         )
       )`,
       [username])
