@@ -57,8 +57,8 @@ module.exports.getOtherProfile = (username)=>{
     db.execute(
       `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers
        FROM(select * from account where username=? and status=1) x,
-           (select account_id, count(*) "following" from friends where account_id=(select id from account where username=?)) y,
-           (select friend_id, count(*) "followers" from friends where friend_id=(select id from account where username=?)) z;`,
+           (select account_id, count(*) "following" from friends where account_id=(select id from account where username=? and status=1)) y,
+           (select friend_id, count(*) "followers" from friends where friend_id=(select id from account where username=? and status=1)) z;`,
     [username, username, username])
     .then(data=>{
       if(data.length > 0){
