@@ -59,6 +59,7 @@ router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
 router.post('/:username/edit-profile', mw.isAuthenticated, (req, res) => {
   const ACTION = '[editProfile]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
+  logger.log('debug', TAG + ACTION + ' request body', req.body)
   if (req.params.username === req.session.user.username){
     profile.editUserProfile(req.body, req.session.user.id)
     .then(data=>{
