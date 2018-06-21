@@ -17,12 +17,12 @@ const TAG = '[Profile]';
 
 // get user profile by ID
 //  should return own profile of user
-module.exports.getUserProfile = (id)=>{
+module.exports.getUserProfile = (id)=> {
   const ACTION = '[getProfile]';
   return new Promise((resolve, reject)=>{
     db.execute(
       `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers
-       FROM(select * from account where id=?) x,
+       FROM(select * from account where id=? and status=1) x,
            (select account_id, count(*) "following" from friends where account_id=?) y,
            (select friend_id, count(*) "followers" from friends where friend_id=?) z;`,
     [id, id, id])
@@ -36,7 +36,7 @@ module.exports.getUserProfile = (id)=>{
       }else{
         logger.log('error', TAG+ACTION, `user_profile:${id} not found`);
         reject(err.raise('INTERNAL_SERVER_ERROR', ));
-        }
+      }
     }).catch(error=>{
         logger.log('error', TAG+ACTION, error);
         reject({
@@ -46,10 +46,9 @@ module.exports.getUserProfile = (id)=>{
             message: 'Page not Found'
           }
         })
-      }
+      })
     });
-  })
-};
+  }
 
 // get user profile by username
 module.exports.getOtherProfile = (username)=>{
@@ -57,9 +56,9 @@ module.exports.getOtherProfile = (username)=>{
   return new Promise((resolve, reject)=>{
     db.execute(
       `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers
-       FROM(select * from account where username=?) x,
-           (select account_id, count(*) "following" from friends where account_id=(select id from account where username=?)) y,
-           (select friend_id, count(*) "followers" from friends where friend_id=(select id from account where username=?)) z;`,
+       FROM(select * from account where username=? and status=1) x,
+           (select account_id, count(*) "following" from friends where account_id=(select id from account where username=? and status=1)) y,
+           (select friend_id, count(*) "followers" from friends where friend_id=(select id from account where username=? and status=1)) z;`,
     [username, username, username])
     .then(data=>{
       if(data.length > 0){
