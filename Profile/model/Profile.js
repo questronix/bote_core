@@ -28,7 +28,6 @@ module.exports.getUserProfile = (id)=> {
     [id, id, id])
     .then(data=>{
       if(data.length > 0){
-        //dont show password
         resolve({
           status: 1,
           user: data[0]
@@ -62,7 +61,6 @@ module.exports.getOtherProfile = (username)=>{
     [username, username, username])
     .then(data=>{
       if(data.length > 0){
-        //dont show password
         resolve({
           status: 1,
           user: data[0]
@@ -82,4 +80,21 @@ module.exports.getOtherProfile = (username)=>{
       reject(err.raise('INTERNAL_SERVER_ERROR', error));
     });
   })
+}
+
+module.exports.editUserProfile = (data, id) => {
+  const ACTION = '[editProfile]';
+  return new Promise((resolve, reject)=>{
+    db.execute(`UPDATE account SET ? WHERE id = ?;`, [data, id])
+    .then(data=>{
+      resolve({
+        status: 1,
+        msg: 'Successfully edited profile'
+      });
+    })
+    .catch(error=>{
+      logger.log('error', TAG+ACTION, error);
+      reject(err.raise('INTERNAL_SERVER_ERROR', error));
+    });
+  });
 }
