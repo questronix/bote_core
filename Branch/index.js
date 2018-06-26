@@ -13,19 +13,13 @@ const gc = require('../common/services/Geocode');
 // });
 
 
-router.get('/', (req, res)=>{
-    br.getStoreHours(req.query.opening, req.query.closing).then(data=>{
-        res.json(data);
-    }).catch(error=>{
-        res.json(error);
-    });
-});
-
 
 router.post('/', (req, res)=>{
     br.getNearestBranch(req.body.input).then(data=>{
+        console.log("tama");
         res.json(data);
     }).catch(error=>{
+        console.log("mali");
         res.json(error);
     });
 });
