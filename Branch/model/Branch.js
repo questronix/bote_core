@@ -45,20 +45,66 @@ const TABLE_COLUMNS = {
 // };
 
 
-module.exports.getStoreHours = (open, close) => {
-    console.log(`[${new Date()}][MODEL - ${TABLE_NAME}].getStoreHours [${PARAMS}]`, JSON.stringify({
-        opening: open,
-        closing: close
-    }));
-    return new Promise((resolve, reject) => {
-        let cols = TABLE_COLUMNS;
-        let sql = `
-            SELECT ${Object.keys(cols).join('-')}, AS Store Hours FROM ${TABLE_NAME}`;
-        db.execute(sql,[open, close]).then(rows=>{
-            resolve(rows);
-        }).catch(error=>{
-            reject(error);
-        });
-    });
-};
 
+
+
+// module.exports.getNearestBranch = (input) => {
+//     // console.log(`[${new Date()}][MODEL - ${TABLE_NAME}].getByNearestLatLong [${PARAMS}]`, JSON.stringify({
+//     //     latitude: lat,
+//     //     longitude: long
+//     // }));
+//     var lat = gc.geocoordinate(input).lat;
+//     var lng = gc.geocoordinate(input).lng;
+   
+//     // gc.geocoordinate(input)
+//     // .then( data => {
+//     //     console.log(data);
+//     // })
+//     // .catch( error => {
+//     //     console.log(error);
+//     // })
+
+
+//     return new Promise((resolve, reject) => {
+//         let cols = TABLE_COLUMNS;
+//         let sql = `
+//             SELECT ${Object.keys(cols).join(',')}, (
+//                 6371 *
+//                 acos(cos(radians(?)) * 
+//                 cos(radians(latitude)) * 
+//                 cos(radians(longitude) - 
+//                 radians(?)) + 
+//                 sin(radians(?)) * 
+//                 sin(radians(latitude)))
+//              ) AS distance FROM ${TABLE_NAME} HAVING distance < 25 ORDER BY distance
+//         `;
+//         db.execute(sql,[lat, lng, lat]).then(rows=>{
+//             resolve(rows);
+//         }).catch(error=>{
+//             reject(error);
+//         });
+//     }   );
+// };
+
+
+
+// async.auto({
+//     latlng: function(gcCallback, results){
+//         gc.geocoordinate(function(latlng){
+//             console.log('GEOCOORDINATE', latlng);
+//             gcCallback(null, latlng);
+//         });
+//     },
+
+//     nearest: ['geocoordinate', function(result, nearestCallback){
+//         getNearestBranch(result.gc.geocoordinate, function(nearest){
+//             console.log('NEAREST', nearest);
+//             nearestCallback(null, nearest);
+//         });
+//     }]    
+
+// }, function(err, results){
+//     if(err) console.log(err);
+//     else console.log('result: ', results);
+    
+// })
