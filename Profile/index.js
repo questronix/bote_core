@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const mw = require('../common/middleware/Authentication');
+const err = require('../common/services/Errors');
 const logger = require('../common/services/Logger');
 
 const profile = require('./model/Profile');
@@ -50,14 +51,14 @@ router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
     .then( data => {
       res.json(data);
     })
-    .catch( error => {
+    .catch(error => {
       res.json(error);
     })
   }
 );
 
 router.post('/:username/edit-profile', mw.isAuthenticated, (req, res) => {
-  const ACTION = '[editProfile]';
+  const ACTION = '[postEditProfile]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
   logger.log('debug', TAG + ACTION + ' request body', req.body)
   if (req.params.username === req.session.user.username){
@@ -66,10 +67,11 @@ router.post('/:username/edit-profile', mw.isAuthenticated, (req, res) => {
       res.json(data);
     })
     .catch(error=>{
-      res.status(400).json(error);
+      res.error(error);
     });
   }else{
-    res.status(403).json(error);
+    res.json(err.raise('UNAUTHORIZED'));
   }
-})
+});
+
 module.exports = router;

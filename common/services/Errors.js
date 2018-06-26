@@ -22,6 +22,20 @@ module.exports = {
 					code: -3,
 					message: 'Username or Password is incorrect.'
 				}
+			},
+			UNAUTHORIZED: {
+				status: 401,
+				error: {
+					code: -5,
+					message: 'Unauthorized'
+				}
+			},
+			NOT_FOUND: {
+				status: 404,
+				error: {
+					code: -6,
+					message: 'Not Found'
+				}
 			}
 		};
 		return errors[tag];

@@ -18,21 +18,25 @@ module.exports.authenticate = (username, password)=>{
         //Base64('passwordhash:salt')
         let userpass = (Buffer.from(user.userpass, "base64").toString("utf8")).split(":");
         if(pass.validate(password, userpass[0], userpass[1])){
-          //return the user
-          resolve({
-            status: 1,
-            msg: 'Success',
-            user: {
-              id: user.id,
-              email: user.email,
-              username: user.username,
-              fn: user.fn,
-              ln: user.ln,
-              address: user.address,
-              status: user.status,
-              date_created: user.date_created
-            }
-          });
+          if(user.status === 1){
+            //return the user
+            resolve({
+              status: 1,
+              msg: 'Success',
+              user: {
+                id: user.id,
+                email: user.email,
+                username: user.username,
+                fn: user.fn,
+                ln: user.ln,
+                address: user.address,
+                status: user.status,
+                date_created: user.date_created
+              }
+            });
+          }else{
+            reject(err.raise('UNAUTHORIZED'));
+          }
         }else{
           reject(err.raise('INVALID_CREDENTIALS'));
         }
