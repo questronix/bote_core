@@ -96,10 +96,14 @@ const login = require('./Login');
 const profile = require('./Profile');
 const watson = require('./watson');
 const logout = require('./Logout');
+const branch = require('./Branch');
+const atm = require('./ATM');
 
 app.use('/login', login);
 app.use('/profile', profile);
 app.use('/chat', watson);
 app.use('/logout', logout);
+app.use('/branch', branch);
+app.use('/atm', atm);
 
 module.exports = app;
