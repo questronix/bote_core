@@ -14,8 +14,7 @@ const TABLE_COLUMNS = {
     latitude: 'double',
     longitude: 'double',
     contactno: 'string',
-    opening: 'string',
-    closing: 'string'
+
 };
 
 module.exports.getByNearestLatLong = (lat, long) => {
@@ -26,20 +25,16 @@ module.exports.getByNearestLatLong = (lat, long) => {
     return new Promise((resolve, reject) => {
         let cols = TABLE_COLUMNS;
         let sql = `
-            SELECT ${Object.keys(cols).join(',')}, (
-                6371 *
-                acos(cos(radians(?)) * 
-                cos(radians(latitude)) * 
-                cos(radians(longitude) - 
-                radians(?)) + 
-                sin(radians(?)) * 
-                sin(radians(latitude)))
-             ) AS distance FROM ${TABLE_NAME} HAVING distance < 25 ORDER BY distance
-        `;
+            SELECT ${Object.keys(cols).join(',')}, (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude))) ) AS distance FROM ${TABLE_NAME} HAVING distance < 15 ORDER BY distance LIMIT 3;`;
+
         db.execute(sql,[lat, long, lat]).then(rows=>{
             resolve(rows);
+            let newOutput = rows.map(elem=>{
+                return elem;});
+            return newOutput;
         }).catch(error=>{
             reject(error);
+            console.log(error);
         });
     });
 };

@@ -16,6 +16,8 @@ router.get('/', (req, res)=>{
     br.getNearestBranch(req.query.input).then(data=>{
         console.log("tama");
         res.json(data);
+        console.log(data);
+        
     }).catch(error=>{
         console.log("mali");
         res.json(error);
