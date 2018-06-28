@@ -12,10 +12,8 @@ const gc = require('../common/services/Geocode');
 //     });
 // });
 
-
-
-router.post('/', (req, res)=>{
-    br.getNearestBranch(req.body.input).then(data=>{
+router.get('/', (req, res)=>{
+    br.getNearestBranch(req.query.input).then(data=>{
         console.log("tama");
         res.json(data);
     }).catch(error=>{

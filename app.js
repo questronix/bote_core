@@ -99,11 +99,18 @@ const logout = require('./Logout');
 const branch = require('./Branch');
 const atm = require('./ATM');
 
+/**
+ * BOTE MOBILE ROUTES
+ */
 app.use('/login', login);
 app.use('/profile', profile);
-app.use('/chat', watson);
 app.use('/logout', logout);
+
+/**
+ * WATSON
+ */
 app.use('/branch', branch);
 app.use('/atm', atm);
+app.use('/chat', watson);
 
 module.exports = app;
