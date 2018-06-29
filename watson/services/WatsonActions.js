@@ -3,14 +3,16 @@ const branch = require('../../Branch/model/Branch');
 
 module.exports = {
   getNearestLocation: (data, input)=>{
-    console.log('input', input);
-    if(data.context.action == 'check_location_to_use'){
-      branch.getByNearestLatLong(input.lat, input.lng).then(data=>{
-        console.log('Data', data);
-        return data;
-      }).catch(error=>{
-        return error;
-      });
-    }
+    return new Promise((resolve, reject)=>{
+      if(data.context.action == 'fetch_location_lat_lng'){
+        branch.getByNearestLatLong(input.lat, input.lng).then(data=>{
+          resolve(JSON.parse(JSON.stringify(data)));
+        }).catch(error=>{
+          reject([]);
+        });
+      }else{
+        reject([]);
+      }
+    })
   }
 };
