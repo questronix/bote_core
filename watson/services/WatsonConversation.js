@@ -1,5 +1,6 @@
 const ajax = require('../../common/services/Ajax');
 const ConversationV1 = require('watson-developer-cloud/conversation/v1');
+const actions = require('../services/WatsonActions');
 
 const conversation = new ConversationV1({
   username: process.env.CHAT_USER,
@@ -26,7 +27,22 @@ module.exports.sendMessage = (context, input)=> {
         });
       }
       console.log('Watson Success', data);
-      resolve(data);
+      switch(data.context.action){
+        case 'fetch_location_lat_lng':
+          actions.getNearestLocation(data, {lat: context.lat, lng: context.lng}).then(latlngdata=>{
+            data.locations = latlngdata;
+            resolve(data);
+          }).catch(error=>{
+            reject({
+              status: 500,
+              error: error
+            })
+          });
+        break;
+        default:
+          resolve(data);
+        break;
+      }
     });
   });
 };

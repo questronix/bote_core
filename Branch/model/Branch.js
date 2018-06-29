@@ -29,9 +29,6 @@ module.exports.getByNearestLatLong = (lat, long) => {
 
         db.execute(sql,[lat, long, lat]).then(rows=>{
             resolve(rows);
-            let newOutput = rows.map(elem=>{
-                return elem;});
-            return newOutput;
         }).catch(error=>{
             reject(error);
             console.log(error);
