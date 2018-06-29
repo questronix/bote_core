@@ -14,6 +14,8 @@ const TABLE_COLUMNS = {
     latitude: 'double',
     longitude: 'double',
     contactno: 'string',
+    opening: 'string',
+    closing: 'string'
 
 };
 
