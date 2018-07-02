@@ -29,14 +29,28 @@ module.exports = {
 					code: -5,
 					message: 'Unauthorized'
 				}
-			},
+			},			
 			NOT_FOUND: {
 				status: 404,
 				error: {
 					code: -6,
 					message: 'Not Found'
 				}
-			}
+			},
+			NO_ACCESS_TOKEN: {
+				status: 401,
+				error: {
+					code: -7,
+					message: 'No token provided.'
+				}
+			},
+			JWT_ERROR: {
+				status: 401,
+				error: {
+					code: -7,
+					message: 'JWT error.'
+				}
+			},
 		};
 		return errors[tag];
 	},

@@ -12,9 +12,9 @@ const following = require('./model/Following');
 
 router.get('/:username', mw.isAuthenticated, (req, res)=>{
   const ACTION = '[getProfile]';
-  logger.log('debug', TAG + ACTION + ' request parameters', req.params)
-  if (req.params.username === req.session.user.username){
-    profile.getUserProfile(req.session.user.id)
+  logger.log('debug', TAG + ACTION + ' request parameters', req.params);
+  if (req.params.username === req.user.username){
+    profile.getUserProfile(req.user.id)
     .then(data=>{
       res.json(data);
     })
@@ -57,12 +57,12 @@ router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
   }
 );
 
-router.post('/:username/edit-profile', mw.isAuthenticated, (req, res) => {
+router.put('/:username', mw.isAuthenticated, (req, res) => {
   const ACTION = '[postEditProfile]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
   logger.log('debug', TAG + ACTION + ' request body', req.body)
-  if (req.params.username === req.session.user.username){
-    profile.editUserProfile(req.body, req.session.user.id)
+  if (req.params.username === req.user.username){
+    profile.editUserProfile(req.body, req.user.id)
     .then(data=>{
       res.json(data);
     })

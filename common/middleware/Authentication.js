@@ -1,23 +1,27 @@
-module.exports.isAuthenticated = (req, res, next)=>{
-  if(typeof req.session.user === 'undefined'){
-    //redirect to login page
-    res.status(400).send({
-      status: 0,
-      redirect: 'login'
-    });
-  }else{
-    next();
-  }
-};
+const JWT = require('../services/JWT');
+const Error = require('../services/Errors');
 
-module.exports.allowLogin = (req, res, next)=>{
-  if(typeof req.session.user === 'undefined'){
-    //allow
-    next();
+module.exports.isAuthenticated = (req, res, next)=>{
+  //Get access token
+  let token = req.headers['x-access-token'];
+
+  //if token doen't exist
+  if(!token){
+    res.error(Error.raise('NO_ACCESS_TOKEN'));
   }else{
-    res.status(400).json({
-      status: 0,
-      redirect: 'home'
+    //verify token
+    let jwt = new JWT();
+    jwt.verify(token, (err, result)=>{
+      if(err){
+        //show jwt error
+        let error = Error.raise('JWT_ERROR');
+        error.error.details = err;
+        res.error(error);
+      }else{
+        //go to next route
+        req.user = result;
+        next();
+      }
     });
   }
 };
