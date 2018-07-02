@@ -29,12 +29,14 @@ app.use(function(req, res, next) {
     logger.log('debug', res.req.method + ' ' + req.originalUrl + ' response', body);
     res.status(200);
     res.json(body);
-  }
+  };
+
   res.error = function(error) {
     logger.log('error', res.req.method + ' ' + req.originalUrl + ' response', error);
     res.status(error.status);
-    res.json({ errors: [error.error] });
-  }
+    res.json(error.error);
+  };
+
   next();
 });
 
@@ -45,9 +47,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 const db = require('./common/services/Database');
 let mysqlConnect = db.connect();
 mysqlConnect.then((connect)=>{
-  console.info('[MySQLDB] Database connected', connect);
+  logger.log('info', '[MySQLDB] Database connected.', connect);
 }).catch((error) => {
-  console.error('[MySQLDB] Database error in connection', error);
+  logger.log('error', '[MySQLDB] Database error in connection.', error);
 });
 
 if(process.env.SKIP_REDIS === 'true'){
@@ -100,7 +102,7 @@ const branch = require('./Branch');
 const atm = require('./ATM');
 
 /**
- * BOTE MOBILE ROUTES
+ * BOTE ROUTES
  */
 app.use('/login', login);
 app.use('/profile', profile);

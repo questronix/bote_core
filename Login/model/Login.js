@@ -3,10 +3,10 @@ const db = require('../../common/services/Database');
 const pass = require('../../common/services/Password');
 const err = require('../../common/services/Errors');
 const logger = require('../../common/services/Logger');
+const JWT = require('../../common/services/JWT');
 
 module.exports.authenticate = (username, password)=>{
   const ACTION = '[authenticate]';
-
   return new Promise((resolve, reject)=>{
     //Find user name first
     db.execute(`SELECT * FROM account WHERE username = ?`, [username])
@@ -20,10 +20,7 @@ module.exports.authenticate = (username, password)=>{
         if(pass.validate(password, userpass[0], userpass[1])){
           if(user.status === 1){
             //return the user
-            resolve({
-              status: 1,
-              msg: 'Success',
-              user: {
+            let payload = {
                 id: user.id,
                 email: user.email,
                 username: user.username,
@@ -32,7 +29,12 @@ module.exports.authenticate = (username, password)=>{
                 address: user.address,
                 status: user.status,
                 date_created: user.date_created
-              }
+            };
+            let jwt = new JWT(payload, null);
+            let signed_key = jwt.sign();
+            resolve({
+              msg: 'Authenticated.',
+              token: signed_key
             });
           }else{
             reject(err.raise('UNAUTHORIZED'));
