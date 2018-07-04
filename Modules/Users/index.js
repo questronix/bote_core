@@ -10,6 +10,18 @@ const profile = require('./model/Profile');
 const followers = require('./model/Followers');
 const following = require('./model/Following');
 
+router.get('/me', mw.isAuthenticated, (req, res)=>{
+  const ACTION = '[getProfile Me]';
+  logger.log('debug', TAG + ACTION + ' request parameters', req.params);
+  profile.getUserProfile(req.user.id)
+  .then(data=>{
+    res.success(data);
+  })
+  .catch(error=>{
+    res.error(error);
+  });
+});
+
 router.get('/:username', mw.isAuthenticated, (req, res)=>{
   const ACTION = '[getProfile]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params);
