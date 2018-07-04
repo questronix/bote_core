@@ -1,7 +1,7 @@
-const db = require('../../common/services/Database');
-const err = require('../../common/services/Errors');
-const logger = require('../../common/services/Logger');
-const TAG = '[Profile]';
+const db = require('../../Common/services/Database');
+const err = require('../../Common/services/Errors');
+const logger = require('../../Common/services/Logger');
+const TAG = '[User]';
 
 // returns
 // {
@@ -9,7 +9,7 @@ const TAG = '[Profile]';
 //     following: [user_object, ...]
 // }
 
-module.exports.getFollowing = (username) => {
+exports.getFollowing = (username) => {
   const ACTION = '[getFollowing]';
   return new Promise( (resolve, reject) => {
     db.execute(`SELECT id, fn, ln, username FROM account

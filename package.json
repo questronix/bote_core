@@ -32,7 +32,6 @@
     "mysql": "^2.15.0",
     "redis": "^2.8.0",
     "request": "^2.87.0",
-    "watson-developer-cloud": "^3.5.0",
     "winston": "^2.4.3"
   },
   "devDependencies": {

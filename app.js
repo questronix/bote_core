@@ -7,7 +7,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 //service for logging
-const logger = require('./common/services/Logger');
+const logger = require('./Modules/Common/services/Logger');
 
 const app = express();
 
@@ -44,12 +44,12 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const db = require('./common/services/Database');
+const db = require('./Modules/Common/services/Database');
 let mysqlConnect = db.connect();
 mysqlConnect.then((connect)=>{
-  logger.log('info', '[MySQLDB] Database connected.', connect);
+  logger.log('info', '[MySQLDB]', `Connected to ${process.env.CORE_DB_HOST}:${process.env.CORE_DB_PORT}`);
 }).catch((error) => {
-  logger.log('error', '[MySQLDB] Database error in connection.', error);
+  logger.log('error', '[MySQLDB]', `Connection to ${error.address}:${error.port} failed - connect ${error.code} ${error.address}:${error.port}`);
 });
 
 if(process.env.SKIP_REDIS === 'true'){
@@ -63,6 +63,13 @@ if(process.env.SKIP_REDIS === 'true'){
   const redis = require('redis');
   const redisStore = require('connect-redis')(session);
   const client = redis.createClient();
+
+  client.on('connect', ()=>{
+    logger.log('info', '[Redis]', `Connected to ${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`);
+  });
+  client.on('error', (error)=>{
+    logger.log('error', '[Redis]', `Connection to ${error.address}:${error.port} failed - connect ${error.code} ${error.address}:${error.port}`);
+  });
 
   //declare session middleware using redis
   app.use(session({
@@ -94,25 +101,15 @@ app.use(function(req, res, next) {
   next();
 });
 
-const login = require('./Login');
-const profile = require('./Profile');
-const watson = require('./watson');
-const logout = require('./Logout');
-const branch = require('./Branch');
-const atm = require('./ATM');
+const login = require('./Modules/Login');
+const users = require('./Modules/Users');
+const logout = require('./Modules/Logout');
 
 /**
  * BOTE ROUTES
  */
 app.use('/login', login);
-app.use('/profile', profile);
+app.use('/users', users);
 app.use('/logout', logout);
-
-/**
- * WATSON
- */
-app.use('/branch', branch);
-app.use('/atm', atm);
-app.use('/chat', watson);
 
 module.exports = app;

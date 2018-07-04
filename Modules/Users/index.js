@@ -2,9 +2,9 @@ const TAG = '[Profile]';
 const express = require('express');
 const router = express.Router();
 
-const mw = require('../common/middleware/Authentication');
-const err = require('../common/services/Errors');
-const logger = require('../common/services/Logger');
+const mw = require('../Common/middleware/Authentication');
+const err = require('../Common/services/Errors');
+const logger = require('../Common/services/Logger');
 
 const profile = require('./model/Profile');
 const followers = require('./model/Followers');

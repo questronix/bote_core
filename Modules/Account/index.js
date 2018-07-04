@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mw = require('../common/middleware/Authentication');
+const mw = require('../Common/middleware/Authentication');
 const am = require('./model/Account');
 
 router.get('/', mw.validateSession, (req, res, next)=>{

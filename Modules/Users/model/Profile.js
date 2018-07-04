@@ -1,7 +1,7 @@
-const db = require('../../common/services/Database');
-const err = require('../../common/services/Errors');
-const logger = require('../../common/services/Logger');
-const TAG = '[Profile]';
+const db = require('../../Common/services/Database');
+const err = require('../../Common/services/Errors');
+const logger = require('../../Common/services/Logger');
+const TAG = '[User]';
 
 // returns
 // {
@@ -17,7 +17,7 @@ const TAG = '[Profile]';
 
 // get user profile by ID
 //  should return own profile of user
-module.exports.getUserProfile = (id)=> {
+exports.getUserProfile = (id)=> {
   const ACTION = '[getProfile]';
   return new Promise((resolve, reject)=>{
     db.execute(
@@ -50,7 +50,7 @@ module.exports.getUserProfile = (id)=> {
   }
 
 // get user profile by username
-module.exports.getOtherProfile = (username)=>{
+exports.getOtherProfile = (username)=>{
   const ACTION = '[visitProfile]';
   return new Promise((resolve, reject)=>{
     db.execute(
@@ -82,7 +82,7 @@ module.exports.getOtherProfile = (username)=>{
   })
 }
 
-module.exports.editUserProfile = (data, id) => {
+exports.editUserProfile = (data, id) => {
   const ACTION = '[editProfile]';
   return new Promise((resolve, reject)=>{
     db.execute(`UPDATE account SET ? WHERE id = ?;`, [data, id])
