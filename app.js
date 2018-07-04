@@ -103,10 +103,7 @@ app.use(function(req, res, next) {
 
 const login = require('./Modules/Login');
 const users = require('./Modules/Users');
-const watson = require('./Modules/watson');
 const logout = require('./Modules/Logout');
-const branch = require('./Modules/Branch');
-const atm = require('./Modules/ATM');
 
 /**
  * BOTE ROUTES
@@ -114,12 +111,5 @@ const atm = require('./Modules/ATM');
 app.use('/login', login);
 app.use('/users', users);
 app.use('/logout', logout);
-
-/**
- * WATSON
- */
-app.use('/branch', branch);
-app.use('/atm', atm);
-app.use('/chat', watson);
 
 module.exports = app;
