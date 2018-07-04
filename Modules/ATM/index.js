@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const atm = require('./model/ATM');
-const gc = require('../common/services/Geocode');
+const gc = require('../Common/services/Geocode');
 
 router.get('/', (req, res)=>{
     atm.getByNearestLatLong(req.query.latitude, req.query.longitude).then(data=>{

@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const watson = require('./services/WatsonConversation');
-const gc = require('../common/services/Geocode');
-const sh = require('../common/services/StoreHours');
+const gc = require('../Common/services/Geocode');
+const sh = require('../Common/services/StoreHours');
 const actions = require('./services/WatsonActions');
 
 router.post('/', (req, res, next)=>{

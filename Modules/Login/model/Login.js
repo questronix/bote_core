@@ -1,9 +1,9 @@
 const TAG = '[Login]';
-const db = require('../../common/services/Database');
-const pass = require('../../common/services/Password');
-const err = require('../../common/services/Errors');
-const logger = require('../../common/services/Logger');
-const JWT = require('../../common/services/JWT');
+const db = require('../../Common/services/Database');
+const pass = require('../../Common/services/Password');
+const err = require('../../Common/services/Errors');
+const logger = require('../../Common/services/Logger');
+const JWT = require('../../Common/services/JWT');
 
 module.exports.authenticate = (username, password)=>{
   const ACTION = '[authenticate]';

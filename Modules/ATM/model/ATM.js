@@ -1,4 +1,4 @@
-const db = require('../../common/services/Database');
+const db = require('../../Common/services/Database');
 
 const TABLE_NAME = 'atm';
 const PARAMS = 'PARAMS';

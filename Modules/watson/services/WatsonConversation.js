@@ -1,4 +1,4 @@
-const ajax = require('../../common/services/Ajax');
+const ajax = require('../../Common/services/Ajax');
 const ConversationV1 = require('watson-developer-cloud/conversation/v1');
 const actions = require('../services/WatsonActions');
 

@@ -7,7 +7,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 //service for logging
-const logger = require('./Modules/common/services/Logger');
+const logger = require('./Modules/Common/services/Logger');
 
 const app = express();
 
@@ -44,7 +44,7 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const db = require('./Modules/common/services/Database');
+const db = require('./Modules/Common/services/Database');
 let mysqlConnect = db.connect();
 mysqlConnect.then((connect)=>{
   logger.log('info', '[MySQLDB]', `Connected to ${process.env.CORE_DB_HOST}:${process.env.CORE_DB_PORT}`);
@@ -102,7 +102,7 @@ app.use(function(req, res, next) {
 });
 
 const login = require('./Modules/Login');
-const profile = require('./Modules/Profile');
+const users = require('./Modules/Users');
 const watson = require('./Modules/watson');
 const logout = require('./Modules/Logout');
 const branch = require('./Modules/Branch');
@@ -112,7 +112,7 @@ const atm = require('./Modules/ATM');
  * BOTE ROUTES
  */
 app.use('/login', login);
-app.use('/profile', profile);
+app.use('/users', users);
 app.use('/logout', logout);
 
 /**

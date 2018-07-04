@@ -1,1 +1,1 @@
-module.exports = require('../../common/model/Account');
+module.exports = require('../../Common/model/Account');

@@ -1,5 +1,5 @@
-const db = require('../../common/services/Database');
-const gc = require('../../common/services/Geocode');
+const db = require('../../Common/services/Database');
+const gc = require('../../Common/services/Geocode');
 const async = require('async');
 const fs = require('fs');
 
