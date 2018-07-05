@@ -1,7 +1,7 @@
 const db = require('../../Common/services/Database');
 const err = require('../../Common/services/Errors');
 const logger = require('../../Common/services/Logger');
-const TAG = '[User]';
+const TAG = '[Users]';
 
 // returns
 // {
@@ -22,21 +22,14 @@ exports.getFollowers = (username) => {
       )`,
       [username])
     .then(data => {
-      if (data.length > 0 ){
-        resolve({
-          count: data.length,
-          following: data
-        });
-      }else{
-        resolve({
-          count: 0,
-          msg: 'no followers'
-        });
-      }
+      resolve({
+        count: data.length,
+        following: data
+      });
     })
     .catch(error=>{
       logger.log('error', TAG+ACTION, error);
-      reject(err.raise('INTERNAL_SERVER_ERROR', error));
+      reject(err.raise('INTERNAL_SERVER_ERROR'));
     });
   })
 }

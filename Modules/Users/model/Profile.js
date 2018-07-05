@@ -21,11 +21,15 @@ exports.getUserProfile = (id)=> {
   const ACTION = '[getProfile]';
   return new Promise((resolve, reject)=>{
     db.execute(
-      `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers
-       FROM(select * from account where id=? and status=1) x,
-           (select account_id, count(*) "following" from friends where account_id=?) y,
-           (select friend_id, count(*) "followers" from friends where friend_id=?) z;`,
-    [id, id, id])
+      `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers, a.bottles, b.bars
+       FROM(SELECT * FROM account WHERE id=? and status=1) x,
+           (SELECT account_id, count(*) "following" FROM friends WHERE account_id=?) y,
+           (SELECT friend_id, count(*) "followers" FROM friends WHERE friend_id=?) z,
+           (SELECT count(*) "bottles" FROM stash_details WHERE stash_id IN
+            (SELECT id FROM stash WHERE to_account_id = ?)) a,
+           (SELECT count(*) "bars" from (SELECT * FROM store WHERE id IN
+            (SELECT store_id FROM stash_trans WHERE to_account_id = ? and status = 1))c) b;`,
+    [id, id, id, id, id])
     .then(data=>{
       if(data.length > 0){
         resolve({
@@ -57,8 +61,12 @@ exports.getOtherProfile = (username)=>{
       `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers
        FROM(select * from account where username=? and status=1) x,
            (select account_id, count(*) "following" from friends where account_id=(select id from account where username=? and status=1)) y,
-           (select friend_id, count(*) "followers" from friends where friend_id=(select id from account where username=? and status=1)) z;`,
-    [username, username, username])
+           (select friend_id, count(*) "followers" from friends where friend_id=(select id from account where username=? and status=1)) z,
+           (SELECT count(*) "bottles" FROM stash_details WHERE stash_id IN
+            (SELECT id FROM stash WHERE to_account_id =(select id from account where username=? and status=1))) a,
+           (SELECT count(*) "bars" from (SELECT * FROM store WHERE id IN
+            (SELECT store_id FROM stash_trans WHERE status = 1 and to_account_id=(select id from account where username=? and status=1)))c) b;`,
+    [username, username, username, username, username])
     .then(data=>{
       if(data.length > 0){
         resolve({

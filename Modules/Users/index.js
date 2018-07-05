@@ -1,4 +1,4 @@
-const TAG = '[Profile]';
+const TAG = '[Users]';
 const express = require('express');
 const router = express.Router();
 
@@ -10,36 +10,26 @@ const profile = require('./model/Profile');
 const followers = require('./model/Followers');
 const following = require('./model/Following');
 
-router.get('/me', mw.isAuthenticated, (req, res)=>{
-  const ACTION = '[getProfile Me]';
-  logger.log('debug', TAG + ACTION + ' request parameters', req.params);
-  profile.getUserProfile(req.user.id)
-  .then(data=>{
-    res.success(data);
-  })
-  .catch(error=>{
-    res.error(error);
-  });
-});
-
 router.get('/:username', mw.isAuthenticated, (req, res)=>{
-  const ACTION = '[getProfile]';
-  logger.log('debug', TAG + ACTION + ' request parameters', req.params);
-  if (req.params.username === req.user.username){
-    profile.getUserProfile(req.user.id)
+  if (req.params.username === 'me'){
+    const ACTION = '[getProfile Me]';
+    logger.log('debug', TAG + ACTION + ' request parameters', req.params);
+    profile.getProfile(req.user.username)
     .then(data=>{
-      res.json(data);
+      res.success(data);
     })
     .catch(error=>{
-      res.status(400).json(error);
+      res.error(error);
     });
   }else{
-    profile.getOtherProfile(req.params.username)
+    const ACTION = '[getProfile]';
+    logger.log('debug', TAG + ACTION + ' request parameters', req.params);
+    profile.getProfile(req.params.username)
     .then( data=> {
-      res.json(data);
+      res.success(data);
     })
     .catch(error => {
-      res.json(error);
+      res.error(error);
     });
   }
 });
@@ -49,10 +39,10 @@ router.get('/:username/following', mw.isAuthenticated, (req, res) => {
   logger.log('debug', TAG + ACTION + ' request parameters', req.params);
   following.getFollowing(req.params.username)
     .then( data => {
-      res.json(data);
+      res.success(data);
     })
     .catch( error => {
-      res.json(error);
+      res.error(error);
     })
   }
 );
@@ -61,10 +51,10 @@ router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
   followers.getFollowers(req.params.username)
     .then( data => {
-      res.json(data);
+      res.success(data);
     })
     .catch(error => {
-      res.json(error);
+      res.error(error);
     })
   }
 );
@@ -76,13 +66,13 @@ router.put('/:username', mw.isAuthenticated, (req, res) => {
   if (req.params.username === req.user.username){
     profile.editUserProfile(req.body, req.user.id)
     .then(data=>{
-      res.json(data);
+      res.success(data);
     })
     .catch(error=>{
       res.error(error);
     });
   }else{
-    res.json(err.raise('UNAUTHORIZED'));
+    res.error(err.raise('UNAUTHORIZED'));
   }
 });
 
