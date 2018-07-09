@@ -9,6 +9,8 @@ const logger = require('../Common/services/Logger');
 const profile = require('./model/Profile');
 const followers = require('./model/Followers');
 const following = require('./model/Following');
+const bars = require('./model/Bars');
+const bottles = require('./model/Bottles');
 
 router.get('/:username', mw.isAuthenticated, (req, res)=>{
   if (req.params.username === 'me'){
@@ -74,6 +76,30 @@ router.put('/:username', mw.isAuthenticated, (req, res) => {
   }else{
     res.error(err.raise('UNAUTHORIZED'));
   }
+});
+
+router.get('/:username/bars', mw.isAuthenticated, (req, res) => {
+  const ACTION = '[getBars]';
+  logger.log('debug', TAG + ACTION + ' request parameters ', req.params);
+  bars.getBarsVisited(req.user.id)
+  .then(data=>{
+    res.success(data);
+  })
+  .catch(error=>{
+    res.error(error);
+  });
+});
+
+router.get('/:username/bottles', mw.isAuthenticated, (req, res) => {
+  const ACTION = '[getBottles]';
+  logger.log('debug', TAG + ACTION + ' request parameters ', req.params);
+  bottles.getInventory(req.user.id)
+  .then(data=>{
+    res.success(data);
+  })
+  .catch(error=>{
+    res.error(error);
+  });
 });
 
 module.exports = router;
