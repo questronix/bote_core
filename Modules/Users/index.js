@@ -112,7 +112,7 @@ router.get('/:username/cart', mw.isAuthenticated, (req, res) => {
   const ACTION = '[getCartItems]';
   logger.log('debug', TAG + ACTION + ' request parameters ', req.params);
   if(req.params.username === 'me'){
-    cart.viewCartItems(req.user.username)
+    cart.viewCartItems(req.user.id)
     .then(data=>{
       res.success(data);
     })
