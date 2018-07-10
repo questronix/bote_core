@@ -9,9 +9,11 @@ const logger = require('../Common/services/Logger');
 const profile   = require('./model/Profile');
 const followers = require('./model/Followers');
 const following = require('./model/Following');
+
 const bars      = require('./model/Bars');
 const notifs    = require('./model/Notifications');
 const bottles   = require('./model/Bottles');
+const cart = require('./model/Cart');
 
 router.get('/:username', mw.isAuthenticated, (req, res)=>{
   if (req.params.username === 'me'){
@@ -67,7 +69,7 @@ router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
 );
 
 router.put('/:username', mw.isAuthenticated, (req, res) => {
-  const ACTION = '[postEditProfile]';
+  const ACTION = '[putEditProfile]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
   logger.log('debug', TAG + ACTION + ' request body', req.body)
 
@@ -88,7 +90,9 @@ router.put('/:username', mw.isAuthenticated, (req, res) => {
 router.get('/:username/bars', mw.isAuthenticated, (req, res) => {
   const ACTION = '[getBars]';
   logger.log('debug', TAG + ACTION + ' request parameters ', req.params);
-  bars.getBarsVisited(req.user.id)
+  let uname = (req.params.username === 'me' ? req.user.username:req.params.username);
+
+  bars.getBarsVisited(uname)
   .then(data=>{
     res.success(data);
   })
@@ -100,7 +104,9 @@ router.get('/:username/bars', mw.isAuthenticated, (req, res) => {
 router.get('/:username/bottles', mw.isAuthenticated, (req, res) => {
   const ACTION = '[getBottles]';
   logger.log('debug', TAG + ACTION + ' request parameters ', req.params);
-  bottles.getInventory(req.user.id)
+  let uname = (req.params.username === 'me' ? req.user.username:req.params.username);
+
+  bottles.getInventory(uname)
   .then(data=>{
     res.success(data);
   })
@@ -120,6 +126,22 @@ router.get('/:username/notifications', mw.isAuthenticated, (req, res) => {
   .catch( error=>{
     res.error(error);
   });
+});
+
+router.get('/:username/cart', mw.isAuthenticated, (req, res) => {
+  const ACTION = '[getCartItems]';
+  logger.log('debug', TAG + ACTION + ' request parameters ', req.params);
+  if(req.params.username === 'me'){
+    cart.viewCartItems(req.user.id)
+    .then(data=>{
+      res.success(data);
+    })
+    .catch(error=>{
+      res.error(error);
+    });
+  }else{
+    res.error(err.raise('UNAUTHORIZED'));
+  }
 });
 
 module.exports = router;
