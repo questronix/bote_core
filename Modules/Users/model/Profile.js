@@ -30,18 +30,12 @@ exports.getProfile = (username)=> {
     .then(data=>{
       if(data.length > 0){
         resolve({
-          status: 1,
+          status: 200,
           user: data[0]
         });
       }else{
         logger.log('error', TAG+ACTION, error);
-        reject({
-          status: 404,
-          error: {
-            code: -4,
-            message: 'Page not Found'
-          }
-        })
+        reject(err.raise('NOT_FOUND'))
       }
     }).catch(error=>{
       logger.log('error', TAG+ACTION, error);

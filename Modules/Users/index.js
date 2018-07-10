@@ -6,11 +6,13 @@ const mw = require('../Common/middleware/Authentication');
 const err = require('../Common/services/Errors');
 const logger = require('../Common/services/Logger');
 
-const profile = require('./model/Profile');
+const profile   = require('./model/Profile');
 const followers = require('./model/Followers');
 const following = require('./model/Following');
-const bars = require('./model/Bars');
-const bottles = require('./model/Bottles');
+
+const bars      = require('./model/Bars');
+const notifs    = require('./model/Notifications');
+const bottles   = require('./model/Bottles');
 const cart = require('./model/Cart');
 
 router.get('/:username', mw.isAuthenticated, (req, res)=>{
@@ -40,7 +42,9 @@ router.get('/:username', mw.isAuthenticated, (req, res)=>{
 router.get('/:username/following', mw.isAuthenticated, (req, res) => {
   const ACTION = '[getFollowing]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params);
-  following.getFollowing(req.params.username)
+
+  let uname = req.params.username=='me'? req.user.username:req.params.username;
+  following.getFollowing(uname)
     .then( data => {
       res.success(data);
     })
@@ -52,7 +56,9 @@ router.get('/:username/following', mw.isAuthenticated, (req, res) => {
 router.get('/:username/followers', mw.isAuthenticated, (req, res) => {
   const ACTION = '[getFollowers]';
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
-  followers.getFollowers(req.params.username)
+
+  let uname = req.params.username=='me'? req.user.username:req.params.username;
+  followers.getFollowers(uname)
     .then( data => {
       res.success(data);
     })
@@ -67,7 +73,8 @@ router.put('/:username', mw.isAuthenticated, (req, res) => {
   logger.log('debug', TAG + ACTION + ' request parameters', req.params)
   logger.log('debug', TAG + ACTION + ' request body', req.body)
 
-  if (req.params.username === 'me'){
+  let uname = req.params.username=='me'? req.user.username:req.params.username;
+  if (uname === req.user.username){
     profile.editUserProfile(req.body, req.user.id)
     .then(data=>{
       res.success(data);
@@ -104,6 +111,19 @@ router.get('/:username/bottles', mw.isAuthenticated, (req, res) => {
     res.success(data);
   })
   .catch(error=>{
+    res.error(error);
+  });
+});
+
+router.get('/:username/notifications', mw.isAuthenticated, (req, res) => {
+  const ACTION = '[getNotifications]';
+  logger.log('debug', TAG+ACTION + 'request parameters ', req.params);
+
+  notifs.getNotifications(req.user.id)
+  .then( data=> {
+    res.success(data);
+  })
+  .catch( error=>{
     res.error(error);
   });
 });
