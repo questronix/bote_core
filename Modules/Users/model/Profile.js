@@ -1,7 +1,7 @@
 const db = require('../../Common/services/Database');
 const err = require('../../Common/services/Errors');
 const logger = require('../../Common/services/Logger');
-const TAG = '[User]';
+const TAG = '[Users]';
 
 // returns
 // {
@@ -56,7 +56,6 @@ exports.editUserProfile = (data, id) => {
     db.execute(`UPDATE account SET ? WHERE id = ?;`, [data, id])
     .then(data=>{
       resolve({
-        status: 1,
         msg: 'Successfully edited profile'
       });
     })

@@ -3,19 +3,19 @@ const err = require('../../Common/services/Errors');
 const logger = require('../../Common/services/Logger');
 const TAG = '[Users]';
 
-/*gets the bar(s) where drinker claimed drinks from*/
-exports.getBarsVisited = (username)=> {
-    const ACTION = '[getBarsVisited]';
+exports.viewCartItems = (username) => {
+    const ACTION = '[viewCartItems]';
     return new Promise((resolve, reject)=>{
-        db.execute(`SELECT DISTINCT x.* from (SELECT name, address FROM store WHERE id IN
-            (SELECT store_id FROM stash_trans WHERE to_account_id = 
-            (SELECT id FROM account WHERE username = ?) and status = 1)) x`, [username])
+        db.execute(`SELECT i.*, c.qty, si.amount, si.qty "stocks" FROM item i
+        LEFT JOIN store_items si ON i.id=si.item_id
+        LEFT JOIN cart c ON si.id=c.store_item_id 
+        WHERE c.date_removed IS NULL AND c.account_id=(SELECT id FROM account WHERE username=?)`, [username])
         .then(data=>{
             resolve({
-                count: data.length,
                 data: data
             });
-        }).catch(error=>{
+        })
+        .catch(error=>{
             logger.log('error', TAG+ACTION, error);
             reject(err.raise('INTERNAL_SERVER_ERROR', error));
         })
