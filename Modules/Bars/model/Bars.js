@@ -11,9 +11,9 @@ function getBars(args){
   let db_query = 'select * from store';
   if(args){
     if (args.address){
-      db_query += ` where address like '%${query.address}%'`;
+      db_query += ` where address like '%${args.address}%'`;
     }else if(args.name){
-      db_query += ` where name like '%${query.name}%'`;
+      db_query += ` where name like '%${args.name}%'`;
     }
   }
 
