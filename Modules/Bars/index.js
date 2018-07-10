@@ -10,7 +10,7 @@ router.get('/', mw.isAuthenticated, (req, res) => {
   const ACTION = '[searchBars]';
   logger.log('debug', TAG+ACTION, 'request query: ');
 
-  bars.getBars(req.query)
+  bars.searchBar(req.query)
   .then( data=>{
     res.success(data);
   }).catch( error=>{
@@ -22,7 +22,7 @@ router.get('/:barname', mw.isAuthenticated, (req, res)=>{
   const ACTION = '[getBar]'
   logger.log('debug', TAG+ACTION, 'request params: ', req.params);
 
-  bars.getBar(req.params.barname)
+  bars.viewBar(req.params.barname)
   .then( data=>{
     res.success(data);
   })

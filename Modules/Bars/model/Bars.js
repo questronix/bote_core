@@ -4,7 +4,7 @@ const db      = require('../../Common/services/Database');
 const err     = require('../../Common/services/Errors');
 const logger  = require('../../Common/services/Logger');
 
-exports.getBars = (args)=>{
+function getBars(args){
   // search for bars
   const ACTION = '[getBars]'
 
@@ -29,7 +29,7 @@ exports.getBars = (args)=>{
   });
 }
 
-getBarItems = (name) => {
+function getBarItems(name){
   const ACTION = '[getBaritems]';
 
   return new Promise( (resolve, reject)=> {
@@ -45,7 +45,7 @@ getBarItems = (name) => {
   });
 }
 
-exports.getBar = (name)=>{
+function getBar(name){
   const ACTION = '[getBaritems]';
 
   return new Promise( (resolve, reject) =>{
@@ -66,4 +66,10 @@ exports.getBar = (name)=>{
       reject(err.raise('INTERNAL_SERVER_ERROR'));
     })
   })
+}
+
+module.exports = {
+  searchBar: getBars,
+  viewBar  : getBar,
+  viewBarItems: getBarItems
 }
