@@ -18,15 +18,22 @@ exports.getProfile = (username)=> {
   const ACTION = '[getProfile]';
   return new Promise((resolve, reject)=>{
     db.execute(
-      `SELECT x.id, x.username, x.fn, x.ln, x.email, y.following, z.followers, a.bottles, b.bars
-       FROM(SELECT * FROM account WHERE id=(select id from account where username=? and status=1) and status=1) x,
-           (SELECT account_id, count(*) "following" FROM friends WHERE account_id=(select id from account where username=? and status=1)) y,
-           (SELECT friend_id, count(*) "followers" FROM friends WHERE friend_id=(select id from account where username=? and status=1)) z,
-           (SELECT count(*) "bottles" FROM stash_details WHERE stash_id IN
-            (SELECT id FROM stash WHERE to_account_id = (select id from account where username=? and status=1))) a,
-           (SELECT count(*) "bars" from (SELECT * FROM store WHERE id IN
-            (SELECT store_id FROM stash_trans WHERE to_account_id = (select id from account where username=? and status=1) and status = 1))c) b;`,
-      [username, username, username, username, username])
+      `SELECT 
+      a.id,
+      a.username,
+      a.fn,
+      a.ln,
+      a.email,
+      a.address,
+      a.date_created,
+      a.date_activated,
+      (SELECT count(account_id) FROM friends WHERE account_id = a.id) as following,
+      (SELECT count(friend_id) FROM friends WHERE friend_id = a.id) as followers,
+      (SELECT COUNT(id) FROM stash_details WHERE stash_id IN (SELECT id FROM stash WHERE to_account_id = a.id) ) as bottles,
+      (SELECT COUNT(id) FROM store WHERE id IN (SELECT store_id FROM stash_trans WHERE to_account_id = a.id)) as bars
+    FROM account a
+    WHERE a.username = ? and status = 1`,
+      [username])
     .then(data=>{
       if(data.length > 0){
         resolve({
