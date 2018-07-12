@@ -104,14 +104,15 @@ app.use(function(req, res, next) {
 const login   = require('./Modules/Login');
 const users   = require('./Modules/Users');
 const bars    = require('./Modules/Bars');
+const cart    = require('./Modules/Cart');
 const logout  = require('./Modules/Logout');
-
 /**
  * BOTE ROUTES
  */
 app.use('/login', login);
 app.use('/users', users);
 app.use('/bars', bars);
+app.use('/cart', cart);
 app.use('/logout', logout);
 
 module.exports = app;

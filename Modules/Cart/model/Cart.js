@@ -1,7 +1,7 @@
 const db = require('../../Common/services/Database');
 const err = require('../../Common/services/Errors');
 const logger = require('../../Common/services/Logger');
-const TAG = '[Users]';
+const TAG = '[Cart]';
 
 exports.viewCartItems = (id) => {
     const ACTION = '[viewCartItems]';
@@ -55,7 +55,7 @@ exports.getItemFromCart = (account_id, sid) => {
     });
 }
 
-exports.updateItemFromCart = (account_id, sid, data) => {
+exports.updateItemInCart = (account_id, sid, data) => {
     const ACTION = '[updateItemFromCart]';
     return new Promise((resolve, reject)=>{
         db.execute(`UPDATE cart SET ? WHERE account_id = ? AND store_item_id = ?`, [data, account_id, sid])
