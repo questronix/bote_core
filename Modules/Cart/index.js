@@ -10,7 +10,7 @@ const cart = require('./model/Cart');
 
 router.get('/', mw.isAuthenticated, (req, res) => {
     const ACTION = '[getCartItems]';
-    logger.log('debug', TAG + ACTION, + ' no request requirements ');
+    logger.log('info', TAG + ACTION, '');
     
     cart.viewCartItems(req.user.id)
     .then(data=>{
@@ -23,9 +23,9 @@ router.get('/', mw.isAuthenticated, (req, res) => {
 
 router.post('/', mw.isAuthenticated, (req, res) => {
     const ACTION = '[postAddToCart]';
-    logger.log('debug', TAG + ACTION, + ' no request requirements ');
+    logger.log('debug', TAG + ACTION, + ' body', req.body);
     
-    cart.addToCart(req.user.id, req.body.store_item_id, req.body.qty)
+    cart.addItem(req.user.id, req.body.store_item_id, req.body.qty)
     .then(data=>{
         res.success(data);
     })
