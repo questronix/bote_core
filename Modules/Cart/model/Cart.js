@@ -82,7 +82,7 @@ const cart = {
             })
         });
     },
-    
+
     addItem: function(id, sid, qty){
         const ACTION = '[addItem]';
         logger.log('info', TAG+ACTION, id, sid, qty)
@@ -113,6 +113,7 @@ const cart = {
                     }else{
                         let data = {
                             date_removed: null,
+                            date_checkout: null,
                             qty: rows[0].qty
                         }
                         cart.updateItemInCart(id, sid, data)
