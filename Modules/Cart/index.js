@@ -60,4 +60,17 @@ router.put('/items/:item_id', mw.isAuthenticated, (req, res) => {
     });
 });
 
+router.post('/items', mw.isAuthenticated, (req, res)=>{
+    const ACTION = '[postRemoveItem]';
+    logger.log('debug', TAG+ACTION+' request body: ', req.body);
+    
+    cart.removeItem(req.user.id, req.body.item_id)
+    .then(data=>{
+        res.success(data);
+    })
+    .catch(error=>{
+        res.error(error);
+    })
+});
+
 module.exports = router;
