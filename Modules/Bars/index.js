@@ -6,11 +6,11 @@ const router  = require('express').Router();
 
 const bars    = require('./model/Bars');
 
-router.get('/', mw.isAuthenticated, (req, res) => {
+router.put('/', mw.isAuthenticated, (req, res) => {
   const ACTION = '[searchBars]';
   logger.log('debug', TAG+ACTION, 'request query: ');
 
-  bars.searchBar(req.query)
+  bars.searchBar(req.body)
   .then( data=>{
     res.success(data);
   }).catch( error=>{
