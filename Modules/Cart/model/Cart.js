@@ -85,8 +85,8 @@ const cart = {
 
     addItem: function(id, sid, qty){
         const ACTION = '[addItem]';
-        logger.log('info', TAG+ACTION, id, sid, qty)
-        
+        logger.log('info', TAG+ACTION, id, sid, qty);
+
         return new Promise((resolve, reject)=>{
             async.auto({
                 checker1: function(callback){
@@ -114,7 +114,7 @@ const cart = {
                         let data = {
                             date_removed: null,
                             date_checkout: null,
-                            qty: rows[0].qty
+                            qty: qty
                         }
                         cart.updateItemInCart(id, sid, data)
                         .then(data=>{
