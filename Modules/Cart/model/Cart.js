@@ -134,4 +134,22 @@ const cart = {
     }
 };
 
+exports.removeItem = (account_id, sid)=>{
+    const ACTION = '[removeItemFromCart]';
+
+    return new Promise((resolve, reject)=>{
+        db.execute(`UPDATE cart SET qty=0,date_removed=CURDATE()
+            WHERE account_id= ? AND store_item_id= ?
+            AND date_removed IS NULL;`,
+        [account_id, sid])
+        .then(data=>{
+            resolve({msg: "successfully removed item"});
+        })
+        .catch(error=>{
+            logger.log('error', TAG+ACTION, error);
+            reject(err.raise('INTERNAL_SERVER_ERROR'));
+        })
+    })
+}
+
 module.exports = {...cart};
