@@ -33,8 +33,9 @@ function getBarItems(name){
   const ACTION = '[getBaritems]';
 
   return new Promise( (resolve, reject)=> {
-    db.execute(`select * from store_items
-      where store_id=(select id from store where name=?)`,
+    db.execute(`select si.*, i.* from store_items si
+      left join item i on si.item_id=i.id
+      where si.store_id=(select id from store where name=?)`,
       [name])
     .then( data=>{
       resolve(data);
